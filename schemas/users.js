@@ -50,7 +50,8 @@ const userSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false
-    }
+    },
+    lockTime: Date
   },
   {
     timestamps: true

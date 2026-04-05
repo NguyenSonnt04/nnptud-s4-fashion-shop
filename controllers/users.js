@@ -21,6 +21,14 @@ module.exports = {
             .find({ isDeleted: false })
         return users;
     },
+    GetAnUserByUsername: async function (username) {
+        let user = await userModel
+            .findOne({
+                isDeleted: false,
+                username: username
+            })
+        return user;
+    },
     GetAnUserById: async function (id) {
         let user = await userModel
             .findOne({
