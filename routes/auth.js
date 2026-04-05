@@ -3,6 +3,8 @@ var router = express.Router();
 let userController = require('../controllers/users')
 let bcrypt = require('bcrypt')
 let jwt = require('jsonwebtoken')
+const { CheckLogin } = require("../utils/authHandler");
+const { ChangePasswordValidator, validatedResult } = require("../utils/validateHandler");
 
 router.post('/register', async function (req, res, next) {
     try {
@@ -63,6 +65,32 @@ router.post('/login', async function (req, res, next) {
         })
     }
 
+})
+
+router.get('/me', CheckLogin, function (req, res, next) {
+    res.send(req.user)
+})
+router.post('/logout', CheckLogin, function (req, res, next) {
+    res.cookie('NNPTUD_S4', "", {
+        maxAge: 0,
+        httpOnly: true,
+        secure: false
+    })
+    res.send({
+        message: "logout"
+    })
+})
+
+router.get('/changepassword', CheckLogin, ChangePasswordValidator, validatedResult, async function (req, res, next) {
+    let { oldpassword, newpassword } = req.body;
+    let user = req.user;
+    if (bcrypt.compareSync(oldpassword, user.password)) {
+        user.password = newpassword;
+        await user.save();
+        res.send({ message: "da cap nhat" });
+    } else {
+        res.send({ message: "old password k dung" })
+    }
 })
 
 module.exports = router;
