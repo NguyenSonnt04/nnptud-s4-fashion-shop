@@ -3,13 +3,14 @@ var router = express.Router();
 let userModel = require("../schemas/users");
 let { CreateAnUserValidator, validatedResult, ModifyAnUser } = require('../utils/validateHandler')
 let userController = require('../controllers/users')
+let { CheckLogin,CheckRole } = require('../utils/authHandler')
 
-router.get("/", async function (req, res, next) {
+router.get("/", CheckLogin,CheckRole("ADMIN"), async function (req, res, next) {
   let users = await userController.GetAllUser()
   res.send(users);
 });
 
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", CheckLogin,CheckRole("ADMIN","MODERATOR"), async function (req, res, next) {
   try {
     let result = await userModel
       .find({ _id: req.params.id, isDeleted: false })
