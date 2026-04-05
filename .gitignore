@@ -61,8 +61,8 @@ typings/
 .next
 
 # uploaded files
-uploads/*
-!uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
 
 # claude code
 .claude/

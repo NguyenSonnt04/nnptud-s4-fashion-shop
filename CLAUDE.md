@@ -18,15 +18,19 @@
 ## 1. CẤU TRÚC THƯ MỤC
 
 ```
-├── app.js                  # Entry point Express
-├── bin/www                 # Server bootstrap
-├── controllers/            # Business logic
-├── routes/                 # Route handlers
-├── schemas/                # Mongoose schemas
-├── utils/                  # Utility/middleware modules
-├── resources/              # Static HTML files
-├── uploads/                # Uploaded files
+├── client/                 # Frontend UI (sẽ phát triển)
+└── server/                 # Backend API
+    ├── app.js              # Entry point Express
+    ├── bin/www             # Server bootstrap
+    ├── controllers/        # Business logic
+    ├── routes/             # Route handlers
+    ├── schemas/            # Mongoose schemas
+    ├── utils/              # Utility/middleware modules
+    ├── resources/          # Static HTML files
+    └── uploads/            # Uploaded files
 ```
+
+> **Lưu ý:** Toàn bộ source code backend nằm trong thư mục `server/`. Các đường dẫn import tương đối (`../schemas/users`, `../utils/authHandler`, ...) bên trong `server/` **không thay đổi** vì đều là relative path trong cùng một cây thư mục con.
 
 ### Quy tắc đặt tên file:
 

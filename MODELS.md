@@ -19,7 +19,7 @@
 
 ## A. MODELS ĐÃ XONG SCHEMA (7)
 
-### 1. user — [schemas/users.js](schemas/users.js)
+### 1. user — [server/schemas/users.js](server/schemas/users.js)
 
 Tài khoản người dùng (khách hàng + admin).
 
@@ -41,7 +41,7 @@ Tài khoản người dùng (khách hàng + admin).
 
 ---
 
-### 2. role — [schemas/roles.js](schemas/roles.js)
+### 2. role — [server/schemas/roles.js](server/schemas/roles.js)
 
 Phân quyền (ADMIN / USER / ...).
 
@@ -54,7 +54,7 @@ Phân quyền (ADMIN / USER / ...).
 
 ---
 
-### 3. product — [schemas/products.js](schemas/products.js)
+### 3. product — [server/schemas/products.js](server/schemas/products.js)
 
 Sản phẩm quần áo (thông tin chung, không bao gồm size/màu — xem `productVariant`).
 
@@ -72,7 +72,7 @@ Sản phẩm quần áo (thông tin chung, không bao gồm size/màu — xem `p
 
 ---
 
-### 4. category — [schemas/categories.js](schemas/categories.js)
+### 4. category — [server/schemas/categories.js](server/schemas/categories.js)
 
 Danh mục sản phẩm (áo thun, quần jeans, váy, ...).
 
@@ -86,7 +86,7 @@ Danh mục sản phẩm (áo thun, quần jeans, váy, ...).
 
 ---
 
-### 5. cart — [schemas/carts.js](schemas/carts.js)
+### 5. cart — [server/schemas/carts.js](server/schemas/carts.js)
 
 Giỏ hàng của user (mỗi user 1 giỏ).
 
@@ -104,7 +104,7 @@ Giỏ hàng của user (mỗi user 1 giỏ).
 
 ---
 
-### 6. inventory — [schemas/inventories.js](schemas/inventories.js)
+### 6. inventory — [server/schemas/inventories.js](server/schemas/inventories.js)
 
 Tồn kho theo product (sẽ đổi sang theo variant).
 
@@ -119,7 +119,7 @@ Tồn kho theo product (sẽ đổi sang theo variant).
 
 ---
 
-### 7. message — [schemas/messages.js](schemas/messages.js)
+### 7. message — [server/schemas/messages.js](server/schemas/messages.js)
 
 Tin nhắn chat giữa user ↔ user (hoặc user ↔ admin).
 
@@ -141,7 +141,7 @@ Tin nhắn chat giữa user ↔ user (hoặc user ↔ admin).
 
 ## B. MODELS CÓ FILE — CHƯA CODE SCHEMA (2)
 
-### 8. reservation — [schemas/reservation.js](schemas/reservation.js)
+### 8. reservation — [server/schemas/reservation.js](server/schemas/reservation.js)
 
 Đơn hàng tạm giữ khi user checkout (cầu nối `cart` → `payment`). Khi tạo sẽ trừ `inventory.stock` và cộng `inventory.reserved`.
 
@@ -168,7 +168,7 @@ Tin nhắn chat giữa user ↔ user (hoặc user ↔ admin).
 
 ---
 
-### 9. payment — [schemas/payments.js](schemas/payments.js)
+### 9. payment — [server/schemas/payments.js](server/schemas/payments.js)
 
 Giao dịch thanh toán cho mỗi reservation.
 
@@ -208,8 +208,8 @@ Biến thể sản phẩm theo **size + màu**. Đây là model **bắt buộc v
 | timestamps | | |
 
 > **Lưu ý quan trọng:**
-> - Khi thêm `productVariant`, **phải sửa** [schemas/inventories.js](schemas/inventories.js): đổi `ref: 'product'` → `ref: 'productVariant'`.
-> - **Phải sửa** [schemas/carts.js](schemas/carts.js) và `reservation`: ref về `productVariant` thay vì `product`.
+> - Khi thêm `productVariant`, **phải sửa** [schemas/inventories.js](server/schemas/inventories.js): đổi `ref: 'product'` → `ref: 'productVariant'`.
+> - **Phải sửa** [schemas/carts.js](server/schemas/carts.js) và `reservation`: ref về `productVariant` thay vì `product`.
 
 ---
 

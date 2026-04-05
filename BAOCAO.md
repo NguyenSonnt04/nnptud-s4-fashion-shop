@@ -72,40 +72,44 @@
 
 ```
 ShopThoiTrang/
-├── app.js                  # Entry point Express
-├── bin/www                 # Server bootstrap
-├── controllers/            # Business logic
-│   └── users.js
-├── routes/                 # Route handlers
-│   ├── auth.js
-│   ├── carts.js
-│   ├── categories.js
-│   ├── index.js
-│   ├── messages.js
-│   ├── products.js
-│   ├── roles.js
-│   ├── upload.js
-│   └── users.js
-├── schemas/                # Mongoose schemas
-│   ├── carts.js
-│   ├── categories.js
-│   ├── inventories.js
-│   ├── messages.js
-│   ├── payments.js
-│   ├── products.js
-│   ├── reservation.js
-│   ├── roles.js
-│   └── users.js
-├── utils/                  # Middleware & helpers
-│   ├── SocketHandler.js
-│   ├── authHandler.js
-│   ├── uploadHandler.js
-│   └── validateHandler.js
-├── resources/              # Static HTML files
-├── uploads/                # Uploaded files
-├── CLAUDE.md               # Coding rules
-├── MODELS.md               # Data models docs
-└── package.json
+├── client/                     # Frontend UI (đang phát triển)
+├── server/                     # Backend API
+│   ├── app.js                  # Entry point Express
+│   ├── bin/www                 # Server bootstrap
+│   ├── controllers/            # Business logic
+│   │   └── users.js
+│   ├── routes/                 # Route handlers
+│   │   ├── auth.js
+│   │   ├── carts.js
+│   │   ├── categories.js
+│   │   ├── index.js
+│   │   ├── messages.js
+│   │   ├── products.js
+│   │   ├── roles.js
+│   │   ├── upload.js
+│   │   └── users.js
+│   ├── schemas/                # Mongoose schemas
+│   │   ├── carts.js
+│   │   ├── categories.js
+│   │   ├── inventories.js
+│   │   ├── messages.js
+│   │   ├── payments.js
+│   │   ├── products.js
+│   │   ├── reservation.js
+│   │   ├── roles.js
+│   │   └── users.js
+│   ├── utils/                  # Middleware & helpers
+│   │   ├── SocketHandler.js
+│   │   ├── authHandler.js
+│   │   ├── uploadHandler.js
+│   │   └── validateHandler.js
+│   ├── resources/              # Static HTML files
+│   ├── uploads/                # Uploaded files
+│   └── package.json
+├── CLAUDE.md                   # Coding rules
+├── MODELS.md                   # Data models docs
+├── BAOCAO.md                   # Báo cáo đồ án
+└── .gitignore
 ```
 
 **Prefix API:** tất cả endpoint đều có tiền tố `/api/v1/{resource}` (trừ route trang chủ).
@@ -760,7 +764,7 @@ Base URL: `/api/v1/messages`
 
 #### 5.9.4. Chat realtime qua Socket.IO (bonus)
 
-Ngoài các REST API trên, hệ thống còn tích hợp **Socket.IO** trong file [utils/SocketHandler.js](utils/SocketHandler.js) để đẩy tin nhắn realtime:
+Ngoài các REST API trên, hệ thống còn tích hợp **Socket.IO** trong file [server/utils/SocketHandler.js](server/utils/SocketHandler.js) để đẩy tin nhắn realtime:
 
 - **Auth:** client gửi JWT token qua `socket.handshake.auth.token`, server verify bằng `jwt.verify`.
 - **Events:**
