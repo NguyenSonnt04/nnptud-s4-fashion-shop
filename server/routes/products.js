@@ -54,6 +54,7 @@ router.post('/', async function (req, res, next) {
   session.startTransaction()
   try {
     let newProduct = new productModel({
+      sku: req.body.sku,
       title: req.body.title,
       slug: slugify(req.body.title,
         {
