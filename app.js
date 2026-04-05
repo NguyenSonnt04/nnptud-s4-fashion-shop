@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/index"));
+app.use("/api/v1/categories", require("./routes/categories"));
 //connect
 
 mongoose.connect("mongodb://localhost:27017/db_ecommerce", {});
