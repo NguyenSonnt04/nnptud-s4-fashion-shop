@@ -26,6 +26,7 @@ app.use("/api/v1/auth", require("./routes/auth"));
 app.use("/api/v1/carts", require("./routes/carts"));
 app.use("/api/v1/upload", require("./routes/upload"));
 app.use("/api/v1/messages", require("./routes/messages"));
+app.use("/api/v1/addresses", require("./routes/addresses"));
 //connect
 
 //connect
