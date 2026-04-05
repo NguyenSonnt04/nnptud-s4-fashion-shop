@@ -1,7 +1,13 @@
+//inventory
+//cart
+//reservation
+//payments
 var express = require('express');
 var router = express.Router();
 let slugify = require('slugify');
 let productModel = require('../schemas/products')
+let inventoryModel = require('../schemas/inventories')
+let mongoose = require('mongoose')
 
 //R CUD
 /* GET users listing. */
@@ -44,6 +50,8 @@ router.get('/:id', async function (req, res, next) {
 });
 
 router.post('/', async function (req, res, next) {
+  let session = await mongoose.startSession();
+  session.startTransaction()
   try {
     let newProduct = new productModel({
       title: req.body.title,
@@ -59,15 +67,33 @@ router.post('/', async function (req, res, next) {
       description: req.body.description,
       category: req.body.category
     })
-    await newProduct.save();
-    res.send(newProduct)
+    await newProduct.save({ session });
+
+    let newInventory = new inventoryModel({
+      product: newProduct._id,
+      stock: 0
+    })
+    await newInventory.save({ session });
+    await newInventory.populate('product')
+    await session.commitTransaction()
+    await session.endSession()
+    res.send(newInventory)
   } catch (error) {
+    await session.abortTransaction()
+    await session.endSession()
     res.status(404).send(error.message)
   }
 })
 router.put('/:id', async function (req, res, next) {
   try {
     let id = req.params.id;
+    // let result = await productModel.findById(id)
+    // let keys = Object.keys(req.body);
+    // for (const key of keys) {
+    //     result[key] = req.body[key]
+    //     result.updatedAt = new Date(Date.now())
+    // }
+    // await result.save()
     let result = await productModel.findByIdAndUpdate(
       id, req.body, {
       new: true
