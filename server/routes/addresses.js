@@ -55,4 +55,26 @@ router.post('/', CheckLogin, async function (req, res, next) {
     }
 })
 
+router.put('/:id', CheckLogin, async function (req, res, next) {
+    try {
+        let id = req.params.id;
+        let user = req.user;
+        let address = await addressModel.findOne({
+            isDeleted: false,
+            _id: id,
+            user: user._id
+        })
+        if (!address) {
+            res.status(404).send("ID NOT FOUND")
+            return
+        }
+        let result = await addressModel.findByIdAndUpdate(id, req.body, {
+            new: true
+        })
+        res.send(result)
+    } catch (error) {
+        res.status(404).send(error.message)
+    }
+})
+
 module.exports = router;
