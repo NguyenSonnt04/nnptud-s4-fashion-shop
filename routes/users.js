@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 let userModel = require("../schemas/users");
+let { CreateAnUserValidator, validatedResult, ModifyAnUser } = require('../utils/validateHandler')
 let userController = require('../controllers/users')
 
 router.get("/", async function (req, res, next) {
@@ -23,7 +24,7 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
-router.post("/", async function (req, res, next) {
+router.post("/", CreateAnUserValidator, validatedResult, async function (req, res, next) {
   try {
     let newItem = await userController.CreateAnUser(
       req.body.username, req.body.password, req.body.email, req.body.role,
@@ -37,7 +38,7 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-router.put("/:id", async function (req, res, next) {
+router.put("/:id", ModifyAnUser, validatedResult, async function (req, res, next) {
   try {
     let id = req.params.id;
     let updatedItem = await userModel.findByIdAndUpdate(id, req.body, { new: true });
