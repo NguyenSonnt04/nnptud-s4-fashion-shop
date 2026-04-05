@@ -77,4 +77,25 @@ router.put('/:id', CheckLogin, async function (req, res, next) {
     }
 })
 
+router.delete('/:id', CheckLogin, async function (req, res, next) {
+    try {
+        let id = req.params.id;
+        let user = req.user;
+        let result = await addressModel.findOne({
+            isDeleted: false,
+            _id: id,
+            user: user._id
+        })
+        if (!result) {
+            res.status(404).send("ID NOT FOUND")
+            return
+        }
+        result.isDeleted = true;
+        await result.save()
+        res.send(result)
+    } catch (error) {
+        res.status(404).send(error.message)
+    }
+})
+
 module.exports = router;
