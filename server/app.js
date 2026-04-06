@@ -28,11 +28,12 @@ app.use("/api/v1/carts", require("./routes/carts"));
 app.use("/api/v1/upload", require("./routes/upload"));
 app.use("/api/v1/messages", require("./routes/messages"));
 app.use("/api/v1/addresses", require("./routes/addresses"));
+app.use("/api/v1/payments", require("./routes/payments"));
 //connect
 
 //connect
 
-mongoose.connect("mongodb://127.0.0.1:27017/db_ecommerce?replicaSet=rs0&directConnection=true", {});
+mongoose.connect("mongodb://127.0.0.1:27017/db_ecommerce", {});
 mongoose.connection.on("connected", function () {
   console.log("connected");
 });
