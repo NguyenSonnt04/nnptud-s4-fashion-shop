@@ -10,20 +10,29 @@ let cartModel = require('../schemas/carts')
 const { ChangePasswordValidator, validatedResult } = require("../utils/validateHandler");
 
 router.post('/register', async function (req, res, next) {
+    let session = await mongoose.startSession();
+    session.startTransaction()
     try {
+        //transaction
         let { username, password, email } = req.body;
         let newUser = await userController.CreateAnUser(
-            username, password, email, "69b0ddec842e41e8160132b8", null
+            username, password, email, "69b0ddec842e41e8160132b8", session
         );
         let newCart = new cartModel({
             user: newUser._id
         })
-        await newCart.save()
+        await newCart.save({ session })
         await newCart.populate('user')
+        await session.commitTransaction()
+        await session.endSession()
         res.send(newCart)
+
     } catch (error) {
+        await session.abortTransaction()
+        await session.endSession()
         res.status(404).send(error.message)
     }
+
 })
 router.post('/login', async function (req, res, next) {
     try {
