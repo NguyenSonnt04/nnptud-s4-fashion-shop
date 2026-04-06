@@ -31,7 +31,7 @@ app.use("/api/v1/addresses", require("./routes/addresses"));
 
 //connect
 
-mongoose.connect("mongodb://localhost:27017/db_ecommerce", {});
+mongoose.connect('mongodb://localhost:27017/db_ecommerce');
 mongoose.connection.on("connected", function () {
   console.log("connected");
 });
