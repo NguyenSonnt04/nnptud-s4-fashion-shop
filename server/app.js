@@ -30,6 +30,7 @@ app.use("/api/v1/messages", require("./routes/messages"));
 app.use("/api/v1/addresses", require("./routes/addresses"));
 app.use("/api/v1/payments", require("./routes/payments"));
 app.use("/api/v1/vouchers", require("./routes/vouchers"));
+app.use("/api/v1/reservations", require("./routes/reservations"));
 
 //connect
 
