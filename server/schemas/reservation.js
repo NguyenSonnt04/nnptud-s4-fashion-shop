@@ -13,18 +13,9 @@ let itemReservationSchema = mongoose.Schema({
         type: Number,
         min: 0
     },
-    title: {
-        type: String,
-        default: ''
-    },
     subtotal: {
         type: Number,
         min: 0
-    },
-    promotion: {
-        type: Number,
-        min: 0,
-        default: 0
     }
 }, {
     _id: false
@@ -45,11 +36,6 @@ let reservationSchema = mongoose.Schema({
         ref: 'address',
         required: true
     },
-    voucher: {
-        type: mongoose.Types.ObjectId,
-        ref: 'voucher',
-        default: null
-    },
     payment: {
         type: mongoose.Types.ObjectId,
         ref: 'payment',
@@ -57,12 +43,13 @@ let reservationSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['actived', 'cancelled', 'expired', 'transfer'],
-        default: 'actived'
+        enum: ['pending', 'confirmed', 'shipping', 'delivered', 'cancelled'],
+        default: 'pending'
     },
-    expiredIn: {
-        type: Date,
-        default: null
+    discount: {
+        type: Number,
+        min: 0,
+        default: 0
     },
     amount: {
         type: Number,

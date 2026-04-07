@@ -8,6 +8,7 @@ router.get('/', async function (req, res, next) {
             .populate('user')
             .populate('address')
             .populate('payment')
+            .populate('products.product')
         res.send(data)
     } catch (error) {
         res.status(404).send(error.message)
@@ -18,9 +19,10 @@ router.get('/:id', async function (req, res, next) {
     try {
         let id = req.params.id
         let result = await reservationModel.find({ isDeleted: false, _id: id })
-            .populate('products.product')
+            .populate('user')
             .populate('address')
             .populate('payment')
+            .populate('products.product')
         if (result.length > 0) {
             res.send(result[0])
         } else {
@@ -37,10 +39,9 @@ router.post('/', async function (req, res, next) {
             user: req.body.user,
             products: req.body.products,
             address: req.body.address,
-            voucher: req.body.voucher,
             payment: req.body.payment,
             status: req.body.status,
-            expiredIn: req.body.expiredIn,
+            discount: req.body.discount,
             amount: req.body.amount
         })
         await newReservation.save()

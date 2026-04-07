@@ -16,7 +16,7 @@ router.post('/register', async function (req, res, next) {
         //transaction
         let { username, password, email } = req.body;
         let newUser = await userController.CreateAnUser(
-            username, password, email, "69b0d7001ac226e112673abe", session
+            username, password, email, "69d4d2280492b536fa6f6397", session
         );
         let newCart = new cartModel({
             user: newUser._id
