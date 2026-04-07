@@ -15,7 +15,7 @@ router.get('/', async function (req, res, next) {
   let queries = req.query;
   let titleQ = queries.title ? queries.title.toLowerCase() : '';
   let min = queries.minprice ? queries.minprice : 0;
-  let max = queries.maxprice ? queries.maxprice : 10000;
+  let max = queries.maxprice ? queries.maxprice : 100000000;
   console.log(queries);
   let data = await productModel.find({
     isDeleted: false,
@@ -54,6 +54,7 @@ router.post('/', async function (req, res, next) {
   session.startTransaction()
   try {
     let newProduct = new productModel({
+      sku: req.body.sku,
       title: req.body.title,
       slug: slugify(req.body.title,
         {
