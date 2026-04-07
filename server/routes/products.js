@@ -37,6 +37,9 @@ router.get('/:id', async function (req, res, next) {
     let result = await productModel.find({
       isDeleted: false,
       _id: id
+    }).populate({
+      path: 'category',
+      select: 'name'
     })
     if (result.length > 0) {
       res.send(result[0])
