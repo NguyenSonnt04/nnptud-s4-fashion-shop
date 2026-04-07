@@ -5,10 +5,6 @@ let reservationModel = require('../schemas/reservation')
 router.get('/', async function (req, res, next) {
     try {
         let data = await reservationModel.find({ isDeleted: false })
-            .populate('user')
-            .populate('address')
-            .populate('payment')
-            .populate('products.product')
         res.send(data)
     } catch (error) {
         res.status(404).send(error.message)
@@ -19,10 +15,6 @@ router.get('/:id', async function (req, res, next) {
     try {
         let id = req.params.id
         let result = await reservationModel.find({ isDeleted: false, _id: id })
-            .populate('user')
-            .populate('address')
-            .populate('payment')
-            .populate('products.product')
         if (result.length > 0) {
             res.send(result[0])
         } else {
