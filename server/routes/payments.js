@@ -1,6 +1,8 @@
 var express = require('express')
 var router = express.Router()
 let paymentModel = require('../schemas/payments')
+let addressModel = require('../schemas/addresses')
+let cartModel = require('../schemas/carts')
 const { CheckLogin, CheckRole } = require('../utils/authHandler')
 
 router.get('/', CheckLogin, CheckRole("ADMIN"), async function (req, res, next) {
@@ -39,15 +41,45 @@ router.get('/:id', CheckLogin, async function (req, res, next) {
 router.post('/', CheckLogin, async function (req, res, next) {
     try {
         let user = req.user
+
+        let address = await addressModel.findOne({
+            _id: req.body.address,
+            user: user._id,
+            isDeleted: false
+        })
+        if (!address) {
+            res.status(404).send({ message: "dia chi khong ton tai" })
+            return
+        }
+
+        let cart = await cartModel.findOne({ user: user._id })
+        if (!cart || cart.products.length === 0) {
+            res.status(404).send({ message: "gio hang trong" })
+            return
+        }
+
         let newPayment = new paymentModel({
             user: user._id,
             method: req.body.method,
             amount: req.body.amount,
             transactionID: req.body.transactionID,
             currency: req.body.currency,
-            pendingAt: Date.now()
+            pendingAt: Date.now(),
+            address: {
+                fullName: address.fullName,
+                phone: address.phone,
+                province: address.province,
+                district: address.district,
+                ward: address.ward,
+                detail: address.detail
+            },
+            items: cart.products
         })
         await newPayment.save()
+
+        cart.products = []
+        await cart.save()
+
         res.send(newPayment)
     } catch (error) {
         res.status(404).send(error.message)

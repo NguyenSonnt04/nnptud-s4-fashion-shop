@@ -5,6 +5,25 @@ let { CreateAnUserValidator, validatedResult, ModifyAnUser } = require('../utils
 let userController = require('../controllers/users')
 let { CheckLogin,CheckRole } = require('../utils/authHandler')
 
+let roleModel = require("../schemas/roles");
+
+router.get("/support", CheckLogin, async function (req, res, next) {
+  try {
+    let adminRole = await roleModel.findOne({ name: "ADMIN", isDeleted: false })
+    if (!adminRole) {
+      res.status(404).send({ message: "khong tim thay admin" })
+      return
+    }
+    let admins = await userModel.find({
+      isDeleted: false,
+      role: adminRole._id
+    }).select("_id username fullName avatarUrl")
+    res.send(admins)
+  } catch (error) {
+    res.status(404).send(error.message)
+  }
+})
+
 router.get("/", CheckLogin,CheckRole("ADMIN"), async function (req, res, next) {
   let users = await userController.GetAllUser()
   res.send(users);

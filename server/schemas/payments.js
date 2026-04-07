@@ -1,5 +1,19 @@
 let mongoose = require('mongoose')
 
+let paymentAddressSchema = mongoose.Schema({
+    fullName: { type: String },
+    phone: { type: String },
+    province: { type: String },
+    district: { type: String },
+    ward: { type: String },
+    detail: { type: String, default: "" }
+}, { _id: false })
+
+let paymentItemSchema = mongoose.Schema({
+    product: { type: mongoose.Types.ObjectId },
+    quantity: { type: Number, min: 1 }
+}, { _id: false })
+
 let paymentSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +37,14 @@ let paymentSchema = mongoose.Schema({
         type: Number,
         required: true,
         min: 0
+    },
+    address: {
+        type: paymentAddressSchema,
+        default: null
+    },
+    items: {
+        type: [paymentItemSchema],
+        default: []
     },
     status: {
         type: String,

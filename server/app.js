@@ -35,7 +35,9 @@ app.use("/api/v1/reservations", require("./routes/reservations"));
 //connect
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/db_ecommerce", {});
+mongoose.connect('mongodb://localhost:27017/db_ecommerce');
+
+
 mongoose.connection.on("connected", function () {
   console.log("connected");
 });
