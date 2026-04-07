@@ -34,17 +34,10 @@ export function ChatWidget() {
           if (!isActive) return
           setMessages(msgs.reverse())
         } else {
-          const roles = await apiRequest('/roles')
-          const adminRole = roles.find(function (r) { return r.name === 'ADMIN' })
-          if (adminRole) {
-            const users = await apiRequest('/users')
-            if (!isActive) return
-            const admin = users.find(function (u) {
-              return (u.role === adminRole._id || u.role?._id === adminRole._id) && !u.isDeleted
-            })
-            if (admin) {
-              setAdminUser(admin._id)
-            }
+          const admins = await apiRequest('/users/support')
+          if (!isActive) return
+          if (admins.length > 0) {
+            setAdminUser(admins[0]._id)
           }
         }
         setInitialized(true)
@@ -128,13 +121,13 @@ export function ChatWidget() {
           <div className="chat-widget-header">
             <div>
               <strong>Maison S4</strong>
-              <small>Ho tro truc tuyen</small>
+              <small>Hỗ trợ trực tuyến</small>
             </div>
             <button
               className="chat-widget-close"
               type="button"
               onClick={function () { setOpen(false) }}
-              aria-label="Dong chat"
+              aria-label="Đóng chat"
             >
               <CloseIcon className="chat-widget-close-icon" />
             </button>
@@ -142,11 +135,11 @@ export function ChatWidget() {
 
           <div className="chat-widget-body">
             {loading ? (
-              <p className="chat-widget-status">Dang tai...</p>
+              <p className="chat-widget-status">Đang tải...</p>
             ) : !adminUser ? (
-              <p className="chat-widget-status">Chua co nhan vien ho tro.</p>
+              <p className="chat-widget-status">Chưa có nhân viên hỗ trợ.</p>
             ) : messages.length === 0 ? (
-              <p className="chat-widget-status">Chua co tin nhan nao. Hay bat dau cuoc tro chuyen!</p>
+              <p className="chat-widget-status">Chưa có tin nhắn nào. Hãy bắt đầu cuộc trò chuyện!</p>
             ) : (
               messages.map(function (msg) {
                 const isMe = msg.from?._id === user._id || msg.from === user._id
@@ -167,13 +160,13 @@ export function ChatWidget() {
             <form className="chat-widget-input" onSubmit={handleSend}>
               <input
                 type="text"
-                placeholder="Nhap tin nhan..."
+                placeholder="Nhập tin nhắn..."
                 value={text}
                 onChange={function (e) { setText(e.target.value) }}
                 disabled={sending}
               />
               <button className="button button-primary" type="submit" disabled={sending || !text.trim()}>
-                Gui
+                Gửi
               </button>
             </form>
           ) : null}
@@ -184,7 +177,7 @@ export function ChatWidget() {
         className="chat-widget-toggle"
         type="button"
         onClick={function () { setOpen(!open) }}
-        aria-label={open ? 'Dong chat' : 'Mo chat ho tro'}
+        aria-label={open ? 'Đóng chat' : 'Mở chat hỗ trợ'}
       >
         {open ? (
           <CloseIcon className="chat-widget-toggle-icon" />
